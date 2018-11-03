@@ -14,9 +14,7 @@
           <th v-for="key in columns"
             @click="sortBy(key)"
             :class="{ active: sortKey == key }">
-            {% verbatim %}
-              {{ key | capitalize }}
-            {% endverbatim %}
+            [[ key | capitalize ]]
             <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
             </span>
           </th>
@@ -25,9 +23,7 @@
       <tbody>
         <tr v-for="entry in filteredData">
           <td v-for="key in columns">
-            {% verbatim %}
-              {{ entry[key] }}
-            {% endverbatim %}
+            [[ entry[key] ]]
           </td>
         </tr>
       </tbody>
@@ -36,10 +32,6 @@
 </head>
 
 <body>
-  <noscript>
-    <strong>We're sorry but to continue you have to enable JavaScript support.</strong>
-  </noscript>
-
   <div class="grid-container">
 
     <div class="grid-item" id="app">

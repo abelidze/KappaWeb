@@ -1,8 +1,7 @@
 const OK = 1
 
-Vue.config.delimiters = ['[[', ']]']
-
 var inputVm = new Vue({
+  delimiters: ['[[', ']]'],
   el: '#app',
   data: {
     input: "",
@@ -10,31 +9,29 @@ var inputVm = new Vue({
   },
   methods: {
     sendQuery: function () {
-      var data = this.input;
-      axios.post('http://localhost:8000/query', data) //http://httpbin.org/post
+      axios.post('http://httpbin.org/post',
+        {
+          name: 'test-table',
+          columns: ['id', 'year'],
+          code: 1,
+          rows: [{ id: 1, year: 1 }]
+        })
         .then((response) => {
-          // data = JSON.parse(response.data.data);
-          // table.name = data.name;
-          // table.gridColumns = data.columns;
-          // table.gridData = data.rows;
-          // handleResponse(data.code);
-          this.output = response.data;
+          json = JSON.parse(response.data.data)
+          table.name = json.name
+          table.gridColumns = json.columns
+          table.gridData = json.rows
+          code = json.code
+          dispatchResponse(code)
         })
     }
   }
-})
-// {
-//   name: 'test-table',
-//   columns: ['id', 'year'],
-//   code: 1,
-//   rows: [{ id: 1, year: 1 }]
-// }
+});
 
-function handleResponse(code) {
+function dispatchResponse(code) {
   if (code === OK)
-    return false;
-  alert("An error iccured -(");
-  return true;
+    return
+  alert("An error iccured ;-(")
 }
 
 Vue.component('kappa-table', {
@@ -91,9 +88,8 @@ Vue.component('kappa-table', {
   }
 })
 
-Vue.config.delimiters = ['[[', ']]']
-
 var table = new Vue({
+  delimiters: ['[[', ']]'],
   el: '#table',
   data: {
     name: '',
