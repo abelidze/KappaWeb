@@ -154,4 +154,5 @@ local_settings.py
 */.pytest_cache/*
 
 
-abel.sh
+dev/
+*.sublime*

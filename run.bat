@@ -1,9 +1,9 @@
 @echo off
 chcp 1251
-title KappaDBMS
+title KappaWeb
 
 cls
-echo Starting KappaDBMS Services...
+echo Starting KappaWeb Services...
 sleep 1
 start "Redis" cmd /k "title Redis && redis-server redis.conf"
 sleep 2
@@ -15,9 +15,9 @@ sleep 1
 
 :loop
 python manage.py runserver
-echo "KappaDBMS is crashed!"
+echo "KappaWeb is crashed!"
 echo.
 echo "############################################"
-echo "#       KappaDBMS is restarting now        #"
+echo "#        KappaWeb is restarting now        #"
 echo "############################################"
 goto loop
