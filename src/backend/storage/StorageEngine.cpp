@@ -1,65 +1,78 @@
-//
-// Created by truefinch on 02.11.18.
-//
+#include "StorageEngine.hpp"
 
-#include "StorageEngine.h"
-
-se::StorageEngine::StorageEngine()
+se::StorageEngine::StorageEngine() : blockManager(), meta_()
 {
   std::ifstream fin(META_DATA_PATH);
-  blockManager = se::BlockManager(fin);
+  if (!fin.is_open()) {
+    throw std::invalid_argument("StorageError: Couldn't open metaData-file.");
+  }
+  my_json j;
+  fin >> j;
+  if (!j.empty()) {
+    for (auto it = j.begin(); it != j.end(); ++it) {
+      meta_.at(it.key()) = it.value();
+    }
+  }
 }
 
-bool se::StorageEngine::flush()
+bool se::StorageEngine::Flush()
 {
   my_json j;
-  std::ofstream fout;
+  std::ofstream fout(META_DATA_PATH);
 
-  for (auto& table : tables_) {
-    j[table.first] = table.second.getColumns();
-    fout.open("./database/" + table.first + ".kp", std::ios_base::binary);
-    for (auto record : table.second.records)
-      if (record.get() != NULL) {
-        fout.write(record.get(), sizeof(record.get()));
-      }
-    fout.close();
+  for (auto it = meta_.begin(); it != meta_.end(); ++it) {
+    j[it->first] = it->second.data();
+    // fout.open("./database/" + it.first + ".kp", std::ios_base::binary);
+    // for (auto record : it.second.records)
+    //   if (record.get() != NULL) {
+    //     fout.write(record.get(), sizeof(record.get()));
+    //   }
+    // fout.close();
   }
 
-  std::string result = j.dump();
-  fout.open(se::StorageEngine::META_DATA_PATH);
-  if (!fout.is_open()) {
-    return false;
-  }
-  fout << result;
+  // std::string result = j.dump();
+  // fout.open(se::StorageEngine::META_DATA_PATH);
+  // if (!fout.is_open()) {
+  //   return false;
+  // }
+
+  fout << j.dump();
   fout.close();
 
   return true;
 }
 
-se::MetaData& se::StorageEngine::createData(se::MetaData& metaData)
+se::MetaData& se::StorageEngine::CreateData(const std::string& key)
 {
-  metaData.data()->at(name);
-  blockManager.createFile(metaData);
-}
-
-se::MetaData se::StorageEngine::getMetaData(const std::string& metaData)
-{
-  std::ifstream fin;
-  fin.open(se::StorageEngine::META_DATA_PATH);
-  if (!fin.is_open()) {
-    throw std::invalid_argument("No such file or directory.");
+  if (meta_.find(key) != meta_.end()) {
+    throw std::invalid_argument("StorageError: Data already exists");
   }
-
-  se::MetaData j;
-  j.read(fin);
-  fin.close();
-  if (j.data()->find(metaData) == j.data()->end())
-    throw std::range_error("No such table");
-
-  return se::MetaData(j.data()->at(metaData));
+  auto md = se::MetaData(key);
+  blockManager.LoadBlockList(md);
+  meta_.insert({key, md});
+  Flush();
+  return meta_.at(key);
 }
 
-void se::StorageEngine::addRow(se::MetaData& metaData, std::shared_ptr<uint8_t>& row, size_t size)
+se::MetaData& se::StorageEngine::GetMetaData(const std::string& key)
 {
-  blockManager.addRow(metaData, row, size);
+  // std::ifstream fin;
+  // fin.open(se::StorageEngine::META_DATA_PATH);
+  // if (!fin.is_open()) {
+  //   throw std::invalid_argument("No such file or directory.");
+  // }
+
+  // se::MetaData j;
+  // j.read(fin);
+  // fin.close();
+  // if (j.data()->find(key) == j.data()->end())
+  //   throw std::range_error("No such table");
+
+  // return se::MetaData(j.data()->at(key));
+  return meta_.at(key);
+}
+
+void se::StorageEngine::AddRow(se::MetaData& metaData, std::shared_ptr<uint8_t>& row, size_t size)
+{
+  blockManager.AddRow(metaData, row, size);
 }
