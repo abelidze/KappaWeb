@@ -5,7 +5,7 @@
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700);
 body {
   display: flex;
-  overflow: hidden;
+  overflow-x: hidden;
   height: 100vh;
   background: #FAFAFA;
   font-family: "Noto Sans", sans-serif;
@@ -439,10 +439,10 @@ input[type=number] {
   margin: 0 auto;
 }
 
-#table {
+#table, .table {
   padding: 0 24px;
 }
-#table table {
+#table table, .table table {
   width: 100%;
 }
 

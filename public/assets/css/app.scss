@@ -27,7 +27,7 @@ $font: "Noto Sans", sans-serif;
 
 body {
   display       : flex;
-  overflow      : hidden;
+  overflow-x    : hidden;
   height        : 100vh;
   background    : #FAFAFA;
   font-family   : $font;
@@ -486,7 +486,7 @@ input[type=number] {
   }
 }
 
-#table {
+#table, .table {
   padding: 0 24px;
 
   table {
