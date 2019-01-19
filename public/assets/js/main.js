@@ -5,26 +5,33 @@ const app = new Vue({
   data: {
     input: "",
     output: "",
-    table: {
-      name: '',
-      query: '',
-      columns: [],
-      data: [],
-    },
+    tables: [],
   },
   methods: {
     sendQuery: function () {
       axios.post('http://localhost:8000/query', this.input) //http://httpbin.org/post
         .then((response) => {
-          // data = JSON.parse(response.data.data);
-          this.table.name = 'test-table';
-          this.table.columns = ['id', 'year'];
-          this.table.data = [{ id: 1, year: 2018 }];
-          // this.table.name = data.name;
-          // this.table.columns = data.columns;
-          // this.table.data = data.rows;
-          // handleResponse(data.code);
-          this.output = response.data;
+          this.output = JSON.stringify(response.data);
+          var data = response.data;
+          this.tables = [];
+          if (handleResponse(data.code || 0) && data.result) {
+            for (var result of data.result) {
+              var columns = result.columns.map(column => column.name);
+              this.tables.push({
+                name: result.name,
+                columns: columns,
+                data: result.records.map(
+                    record => record.reduce((map, obj, i) => (map[columns[i]] = obj, map), {})
+                  ),
+              });
+            }
+          } else {
+            this.tables.push({
+              name: '',
+              columns: ["error"],
+              data: [{error:data}],
+            });
+          }
         })
     }
   }
@@ -39,7 +46,7 @@ const app = new Vue({
 
 function handleResponse(code) {
   if (code === OK)
-    return false;
-  alert("An error iccured -(");
-  return true;
+    return true;
+  alert("Query failed");
+  return false;
 }

@@ -6,7 +6,10 @@ Vue.component('sqltable', {
   props: {
     data: Array,
     columns: Array,
-    filterKey: String
+    filterKey: {
+      type: String,
+      default: ''
+    }
   },
   data: function () {
     var sortOrders = {}
