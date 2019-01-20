@@ -8,9 +8,17 @@ const app = new Vue({
     tables: [],
     history: [],
   },
+  computed: {
+    reversedHistory() {
+      return Object.values(this.history).reverse();
+    }     
+  },
   methods: {
+    clearHistory: function () {
+      this.history = [];
+    },
     sendQuery: function () {
-      history.push(this.input);
+      this.history.push(this.input);
       axios.post('http://localhost:8000/query', this.input) //http://httpbin.org/post
         .then((response) => {
           this.output = JSON.stringify(response.data);
