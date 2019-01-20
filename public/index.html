@@ -35,7 +35,12 @@
             </div>
         </div>
 
-        <input style="margin: 24px" type="submit" @click="sendQuery" value="Execute query"></input>
+        <input style="margin: 24px" type="submit" @click="sendQuery" value="Execute query" />
+        <input v-if="history.length > 0" style="margin: 24px" type="submit" @click="clearHistory" name="delete" value="Clear history" />
+        
+        <div style="text-align:left">
+            <p style="cursor:pointer" v-for="(record, index) in reversedHistory" :key="index" @click="input = record">[[ index + 1 ]]. [[ record ]]</p>
+        </div>
 
         <div class="table" v-for="table in tables">
             <h3>[[ table.name ]]</h3>
