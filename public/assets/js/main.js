@@ -6,9 +6,11 @@ const app = new Vue({
     input: "",
     output: "",
     tables: [],
+    history: [],
   },
   methods: {
     sendQuery: function () {
+      history.push(this.input);
       axios.post('http://localhost:8000/query', this.input) //http://httpbin.org/post
         .then((response) => {
           this.output = JSON.stringify(response.data);
