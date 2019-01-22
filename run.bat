@@ -11,7 +11,7 @@ echo Redis started!
 start "Celery" cmd /k "title Celery && celery worker -A backend.api --loglevel=info"
 sleep 2
 echo Celery started!
-sleep 1
+goto loop
 
 :loop
 python manage.py runserver

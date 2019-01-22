@@ -39,7 +39,7 @@
         <input v-if="history.length > 0" style="margin: 24px" type="submit" @click="clearHistory" name="delete" value="Clear history" />
         
         <div style="text-align:left">
-            <p style="cursor:pointer" v-for="(record, index) in reversedHistory" :key="index" @click="input = record">[[ index + 1 ]]. [[ record ]]</p>
+            <pre style="cursor:pointer" v-for="(record, index) in reversedHistory" :key="index" @click="input = record">[[ index + 1 ]]. [[ record ]]</pre>
         </div>
 
         <div class="table" v-for="table in tables">
