@@ -24,7 +24,6 @@ SECRET_KEY = 'r1kcl6a%%bw$rn(n(!p$&1b9ftce7*0f-j)u#vc=s_&@+2kl02'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
 
@@ -89,7 +88,7 @@ DATABASES = {
 KAPPA_DB = {
     'default': {
         'HOST': '127.0.0.1',
-        'PORT': 12564,
+        'PORT': 12565,
         'USER': 'root',
         'PASS': '',
         'DB': 'default',
@@ -141,13 +140,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -155,7 +150,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'public')
+STATIC_ROOT = os.path.join(BASE_DIR, 'frontend', 'dist')
 STATICFILES_DIRS = (
-  os.path.join(BASE_DIR, 'public/assets'),
+  os.path.join(BASE_DIR, 'frontend', 'dist', 'static'),
+  os.path.join(BASE_DIR, 'public', 'static'),
 )

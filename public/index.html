@@ -3,49 +3,45 @@
 
 
 {% block head %}
-    {% include 'components/sqltable.html' %}
-
+    <link rel="stylesheet" href="{% static "css/chunk-vendors.css" %}" type="text/css" />
     <link rel="stylesheet" href="{% static "css/app.css" %}" type="text/css" />
+    <style>
+.sqlarea.jush-sql.jush {
+    width:    100%;
+    border    : 1px solid rgba(0,0,0,.12)!important;
+    background: #fff;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+    </style>
 {% endblock %}
 
 
 {% block scripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="{% static "js/components.js" %}"></script>
-    <script src="{% static "js/main.js" %}"></script>
+    <script src="{% static "js/chunk-vendors.js" %}"></script>
+    <script src="{% static "js/app.js" %}"></script>
 {% endblock %}
 
 
 {% block content %}
-    <div id="app">
-
-        <div class="grid-container">
-            <div class="grid-item">
-                <p>
-                    <label for="input_text_area">Input query:</label>
-                </p>
-                <textarea class="sqlarea jush-sql jush" rows="20" style="width:45vw" id="input_text_area" name="input_text_area" placeholder="Enter query" v-model='input'></textarea>
-            </div>
-            <div class="grid-item">
-                <p>
-                    <label for="output_text_area">Output result:</label>
-                </p>
-                <textarea class="sqlarea jush-sql jush" rows="20" style="width:45vw" id="output_text_area" name="output_text_area" placeholder="Awaiting" readonly v-model='output'></textarea>
-            </div>
+    <div class="row p-4">
+        <div class="col-lg-6 col-md-12">
+            <p><label for="input_text_area">Input query:</label></p>
+            <textarea class="sqlarea jush-sql jush" rows="12" id="input_text_area" name="input_text_area" placeholder="Enter query" v-model='input'></textarea>
         </div>
-
+        <div class="col-lg-6 col-md-12">
+            <p><label for="output_text_area">Output result:</label></p>
+            <textarea class="sqlarea jush-sql jush" rows="12" id="output_text_area" name="output_text_area" placeholder="Awaiting" readonly v-model='output'></textarea>
+        </div>
         <input style="margin: 24px" type="submit" @click="sendQuery" value="Execute query" />
         <input v-if="history.length > 0" style="margin: 24px" type="submit" @click="clearHistory" name="delete" value="Clear history" />
-        
-        <div style="text-align:left">
-            <pre style="cursor:pointer" v-for="(record, index) in reversedHistory" :key="index" @click="input = record">[[ index + 1 ]]. [[ record ]]</pre>
-        </div>
+    </div>
 
-        <div class="table" v-for="table in tables">
-            <h3>[[ table.name ]]</h3>
-            <sqltable :data="table.data" :columns="table.columns"></sqltable>
-        </div>
+    <div style="text-align:left">
+        <pre style="cursor:pointer" v-for="(record, index) in reversedHistory" :key="index" @click="input = record">[[ index + 1 ]]. [[ record ]]</pre>
+    </div>
 
+    <div class="table" v-for="table in tables">
+        <h3>[[ table.name ]]</h3>
+        <sqltable :data="table.data" :columns="table.columns"></sqltable>
     </div>
 {% endblock %}
