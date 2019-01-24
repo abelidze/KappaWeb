@@ -263,7 +263,6 @@ textarea {
 
 table {
   margin-top     : 20px;
-  min-width      : 800px;
   border-collapse: collapse;
   box-shadow     : 0 1px 4px rgba(88, 88, 88, 0.01), 0 2px 3px rgba(88, 88, 88, 0.26);
   white-space    : nowrap;
@@ -282,10 +281,10 @@ thead th {
     content   : '';
     position  : absolute;
     background: #fafafa;
-    top       : -20px;
-    left      : -10px;
-    width     : 120%;
-    height    : 20px;
+    top       : 0;
+    left      : 0;
+    width     : 100%;
+    height    : 2px;
   }
 
   &:after {
