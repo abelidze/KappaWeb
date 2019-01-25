@@ -257,7 +257,9 @@ input[type=number] {
   }
 }
 
-#table, .table {
+.table {
+  overflow-x: auto;
+
   table {
     width: 100%;
   }
