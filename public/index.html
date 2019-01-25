@@ -48,8 +48,10 @@ body {
         <pre style="cursor:pointer" v-for="(record, index) in reversedHistory" :key="index" @click="input = record">[[ index + 1 ]]. [[ record ]]</pre>
     </div>
 
-    <div class="table" v-for="table in tables">
+    <div class="px-2" v-for="table in tables">
         <h3>[[ table.name ]]</h3>
-        <sqltable :data="table.data" :columns="table.columns"></sqltable>
+        <div class="table">
+            <sqltable :data="table.data" :columns="table.columns"></sqltable>
+        </div>
     </div>
 {% endblock %}

@@ -258,8 +258,6 @@ input[type=number] {
 }
 
 #table, .table {
-  padding: 0 24px;
-
   table {
     width: 100%;
   }
