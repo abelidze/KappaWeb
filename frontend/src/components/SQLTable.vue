@@ -2,29 +2,33 @@
   <table :name='name'>
     <thead>
       <tr>
-        <th v-for="key in columns"
-            :key="key"
-            :class="{ active: sortKey == key }"
-            @click="sortBy(key)"
+        <th v-for="column in columns"
+            :key="column.name"
+            :class="{ active: sortKey == column.name }"
+            @click="sortBy(column.name)"
             >
-                {{ key | capitalize }}
-                <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"></span>
+          <span class="align-middle">{{ column.name | capitalize }}</span>
+          <v-icon class="ml-2" v-if="sortOrders[column.name]" :name="sortOrders[column.name] > 0 ? 'caret-up' : 'caret-down'" />
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="entry in filteredData" :key="entry">
-        <td v-for="key in columns" :key="key">
-            {{ entry[key] }}
-        </td>
+      <tr v-for="(entry, k) in filteredData" :key="k">
+        <td v-for="column in columns" :key="column.name">{{ entry[column.name] }}</td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import 'vue-awesome/icons'
+import Icon from 'vue-awesome/components/Icon'
+
 export default {
   name: 'sqltable',
+  components: {
+    'v-icon': Icon,
+  },
   props: {
     data: Array,
     columns: Array,
@@ -33,49 +37,57 @@ export default {
       default: ''
     }
   },
-  data: function () {
-    var sortOrders = {}
-    this.columns.forEach(function (key) {
-      sortOrders[key] = 1
-    })
+  data() {
     return {
       name: '',
+      elements: [],
       sortKey: '',
-      sortOrders: sortOrders
+      sortOrders: {}
     }
   },
+  mounted() {
+    this.elements = this.data
+  },
+  watch: {
+    data(value) {
+      this.elements = value
+    },
+  },
   computed: {
-    filteredData: function () {
+    columnsType() {
+      return this.columns.reduce((map, obj) => (map[obj.name] = obj.type, map), {})
+    },
+    filteredData() {
       var sortKey = this.sortKey
       var filterKey = this.filterKey && this.filterKey.toLowerCase()
       var order = this.sortOrders[sortKey] || 1
-      var data = this.data
-      if (filterKey) {
-        data = data.filter(function (row) {
-          return Object.keys(row).some(function (key) {
-            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-          })
-        })
-      }
       if (sortKey) {
-        data = data.slice().sort(function (a, b) {
-          a = a[sortKey]
-          b = b[sortKey]
-          return (a === b ? 0 : a > b ? 1 : -1) * order
+        if (this.columnsType[sortKey] === undefined || this.columnsType[sortKey].toLowerCase() === 'text') {
+          // eslint-disable-next-line
+          this.elements.sort((a, b) => (a = a[sortKey], b = b[sortKey], (a === b ? 0 : a > b ? 1 : -1) * order))
+        } else {
+          // eslint-disable-next-line
+          this.elements.sort((a, b) => (a[sortKey] - b[sortKey]) * order)
+        }
+      }
+      var data = this.elements
+      if (filterKey) {
+        data = this.elements.filter(row => {
+          return Object.keys(row).some(key => String(row[key]).toLowerCase().indexOf(filterKey) > -1)
         })
       }
       return data
     }
   },
   filters: {
-    capitalize: function (str) {
+    capitalize(str) {
       return str.charAt(0).toUpperCase() + str.slice(1)
     }
   },
   methods: {
-    sortBy: function (key) {
+    sortBy(key) {
       this.sortKey = key
-      this.sortOrders[key] = -this.sortOrders[key]
+      this.$set(this.sortOrders, key, -this.sortOrders[key] || 1)
     }
   }
 };
@@ -277,29 +289,30 @@ thead th {
   top       : 0;
   z-index   : 2;
 
-  &:before {
-    content   : '';
-    position  : absolute;
-    background: #fafafa;
-    top       : 0;
-    left      : 0;
-    width     : 100%;
-    height    : 2px;
-  }
+  // &:before {
+  //   content   : '';
+  //   position  : absolute;
+  //   background: #fafafa;
+  //   top       : 0;
+  //   left      : 0;
+  //   width     : 100%;
+  //   height    : 2px;
+  // }
 
-  &:after {
-    content      : '';
-    position     : absolute;
-    left         : 0;
-    bottom       : 0;
-    width        : 100%;
-    border-bottom: 1px solid #cecece;
-  }
+  // &:after {
+  //   content      : '';
+  //   position     : absolute;
+  //   left         : 0;
+  //   bottom       : 0;
+  //   width        : 100%;
+  //   border-bottom: 1px solid #cecece;
+  // }
 }
 
 thead th {
-  padding   : 0 18px;
+  padding: 0 18px;
   text-align: left;
+  cursor: pointer;
 }
 
 th {

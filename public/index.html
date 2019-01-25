@@ -32,14 +32,16 @@ body {
     <div class="row p-4">
         <div class="col-lg-6 col-md-12">
             <p><label for="input_text_area">Input query:</label></p>
-            <textarea class="sqlarea jush-sql jush" rows="12" id="input_text_area" name="input_text_area" placeholder="Enter query" v-model='input'></textarea>
+            <textarea class="sqlarea jush-sql jush" rows="8" id="input_text_area" name="input_text_area" placeholder="Enter query" v-model='input'></textarea>
         </div>
         <div class="col-lg-6 col-md-12">
             <p><label for="output_text_area">Output result:</label></p>
-            <textarea class="sqlarea jush-sql jush" rows="12" id="output_text_area" name="output_text_area" placeholder="Awaiting" readonly v-model='output'></textarea>
+            <textarea class="sqlarea jush-sql jush" rows="8" id="output_text_area" name="output_text_area" placeholder="Awaiting" readonly v-model='output'></textarea>
         </div>
-        <input style="margin: 24px" type="submit" @click="sendQuery" value="Execute query" />
-        <input v-if="history.length > 0" style="margin: 24px" type="submit" @click="clearHistory" name="delete" value="Clear history" />
+        <div class="w-100 d-flex justify-content-start flex-wrap flex-sm-nowrap">
+            <input class="mx-3 my-1 flex-fill flex-sm-grow-0" type="submit" @click="sendQuery" value="Execute query" />
+            <input class="mx-3 my-1 flex-fill flex-sm-grow-0" v-if="history.length > 0" type="submit" @click="clearHistory" name="delete" value="Clear history" />
+        </div>
     </div>
 
     <div style="text-align:left">

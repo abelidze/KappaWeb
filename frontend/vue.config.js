@@ -1,19 +1,22 @@
 // const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 
+var path = require('path')
 const pkg = require('./package.json')
 
 module.exports = {
-  publicPath: 'http://0.0.0.0:8080/',
+  publicPath: 'http://localhost:8080/static/js/',
   outputDir: 'dist',
   assetsDir: 'static',
   runtimeCompiler: true,
   filenameHashing: false,
   devServer: {
+    hotOnly: true,
     proxy: {
       '/*': {
-        target: 'http://localhost:8000/'
+        target: 'http://localhost:8000/',
+        ws: false,
       }
-    }
+    },
   },
   chainWebpack: config => {
     config
