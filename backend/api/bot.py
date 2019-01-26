@@ -9,13 +9,6 @@ from django.conf import settings
 telebot.apihelper.proxy = settings.KAPPA_PROXY
 KappaBot = telebot.TeleBot(settings.KAPPA_TOKEN)
 
-KappaBot.remove_webhook()
-if (settings.KAPPA_WEBHOOK is not None):
-    KappaBot.set_webhook(
-        url=settings.KAPPA_WEBHOOK_URL + settings.KAPPA_WEBHOOK
-        # certificate=open(settings.KAPPA_WEBHOOK_CERT, 'r')
-    )
-
 
 @KappaBot.message_handler(func=lambda message: True, content_types=['text'])
 def process_sql(message):
