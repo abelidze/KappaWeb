@@ -10,10 +10,10 @@ telebot.apihelper.proxy = settings.KAPPA_PROXY
 KappaBot = telebot.TeleBot(settings.KAPPA_TOKEN)
 
 KappaBot.remove_webhook()
-if (settings.KAPPA_WEBHOOK_CERT is not None):
+if (settings.KAPPA_WEBHOOK is not None):
     KappaBot.set_webhook(
-        url=settings.KAPPA_WEBHOOK_URL + settings.KAPPA_WEBHOOK,
-        certificate=open(settings.KAPPA_WEBHOOK_CERT, 'r')
+        url=settings.KAPPA_WEBHOOK_URL + settings.KAPPA_WEBHOOK
+        # certificate=open(settings.KAPPA_WEBHOOK_CERT, 'r')
     )
 
 
