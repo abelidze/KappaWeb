@@ -1,3 +1,5 @@
+from telebot import types
+
 import backend.api.kira as kira
 
 from django.http import HttpResponseNotFound, HttpResponse
@@ -6,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.views import View
+from backend.api.bot import KappaBot
 
 
 class AppView(View):
@@ -22,3 +25,12 @@ class QueryView(View):
 		response = HttpResponse()
 		response.content = conn.cursor().execute(request.body).fetch()
 		return response
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class BotView(View):
+    def post(self, request):
+        if request.content_type == 'application/json':
+            update = types.Update.de_json(request.body)
+            KappaBot.process_new_updates([update])
+        return ''
