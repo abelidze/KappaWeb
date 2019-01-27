@@ -34,6 +34,7 @@ class BotView(View):
             KappaBot.process_new_updates([update])
         return HttpResponse(status=200)
 
+
 @method_decorator(csrf_exempt, name='dispatch')
 def test(request):
     print(request.body)
