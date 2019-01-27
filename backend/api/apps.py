@@ -4,7 +4,7 @@ from backend.api.bot import KappaBot
 
 
 class ApiConfig(AppConfig):
-    name = 'api'
+    name = 'backend.api'
 
     def ready(self):
         if (settings.KAPPA_WEBHOOK is not None):

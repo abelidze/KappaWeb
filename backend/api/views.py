@@ -34,4 +34,4 @@ class BotView(View):
         if request.content_type == 'application/json':
             update = types.Update.de_json(request.body)
             KappaBot.process_new_updates([update])
-        return ''
+        return HttpResponse('')
