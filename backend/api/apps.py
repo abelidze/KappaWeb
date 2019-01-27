@@ -12,4 +12,5 @@ class ApiConfig(AppConfig):
             print(KappaBot.set_webhook(
                 url=settings.KAPPA_WEBHOOK_URL + settings.KAPPA_WEBHOOK
             ) )# certificate=open(settings.KAPPA_WEBHOOK_CERT, 'r')
+            print(KappaBot.get_webhook_info())
 
