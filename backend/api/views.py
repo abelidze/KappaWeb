@@ -30,6 +30,7 @@ class QueryView(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class BotView(View):
     def post(self, request):
+        print(request.body)
         if request.content_type == 'application/json':
             update = types.Update.de_json(request.body)
             KappaBot.process_new_updates([update])
