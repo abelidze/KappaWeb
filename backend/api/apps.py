@@ -2,7 +2,6 @@ from django.apps import AppConfig
 from django.conf import settings
 from backend.api.bot import KappaBot
 
-
 class ApiConfig(AppConfig):
     name = 'backend.api'
 
