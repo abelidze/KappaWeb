@@ -6,6 +6,8 @@ from backend.api import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('query', views.QueryView.as_view()),
-    path(settings.KAPPA_WEBHOOK, views.test),
     path('', views.AppView.as_view()),
 ]
+
+if settings.KAPPA_WEBHOOK is not None:
+    urlpatterns.append(path(settings.KAPPA_WEBHOOK, views.test))

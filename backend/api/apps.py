@@ -10,7 +10,6 @@ class ApiConfig(AppConfig):
             print(KappaBot.remove_webhook())
             print(KappaBot.set_webhook(
                 url=settings.KAPPA_WEBHOOK_URL + settings.KAPPA_WEBHOOK,
-                certificate=open('/etc/letsencrypt/live/kappa.skillmasters.ga/fullchain.pem', 'r')
+                certificate=open(settings.KAPPA_WEBHOOK_CERT, 'r')
             ))
             print(KappaBot.get_webhook_info())
-
