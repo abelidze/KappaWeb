@@ -22,7 +22,9 @@ def process_sql(message):
                 tablefmt='presto',
                 numalign='None'
             )
-        else:
+        elif type(response['result']) == str:
+            response = response['result']
+        else
             response = json.dumps(response['result'])
     except:
         response = data
